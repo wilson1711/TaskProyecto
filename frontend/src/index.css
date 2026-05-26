@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cyber-black: #050505;
+  --color-cyber-dark: #0a0a0c;
+  --color-cyber-cyan: #00f2ff;
+  --color-cyber-fuchsia: #ff00ff;
+  --color-cyber-blue: #0062ff;
+  --color-cyber-purple: #bc13fe;
+
+  --shadow-cyber-cyan: 0 0 10px rgba(0, 242, 255, 0.3);
+  --shadow-cyber-fuchsia: 0 0 10px rgba(255, 0, 255, 0.3);
+}
+
+@layer base {
+  body {
+    @apply bg-slate-950 text-slate-100 min-h-screen font-sans;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(0, 242, 255, 0.05) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(255, 0, 255, 0.05) 0px, transparent 50%);
+  }
+}
+
+@layer components {
+  /* cyber-card: Contenedor con estética ciberpunk, fondo oscuro y borde neón suave */
+  .cyber-card {
+    @apply bg-slate-900/50 border border-cyan-400/20 rounded-lg p-6 shadow-cyber-cyan backdrop-blur-sm;
+  }
+
+  /* cyber-button: Botón con efecto de brillo al pasar el mouse */
+  .cyber-button {
+    @apply px-4 py-2 bg-transparent border border-cyan-400 text-cyan-400 rounded-md 
+           hover:bg-cyan-400/10 hover:shadow-cyan-500/50 transition-all duration-300
+           disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-wider text-xs font-bold;
+  }
+
+  .cyber-button-primary {
+    @apply px-4 py-2 bg-cyan-500 text-slate-950 rounded-md 
+           hover:bg-cyan-400 hover:shadow-cyan-500/50 transition-all duration-300
+           disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-wider text-xs font-bold;
+  }
+
+  .cyber-button-fuchsia {
+    @apply px-4 py-2 bg-transparent border border-fuchsia-500 text-fuchsia-500 rounded-md 
+           hover:bg-fuchsia-500/10 hover:shadow-fuchsia-500/50 transition-all duration-300
+           disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-wider text-xs font-bold;
+  }
+
+  /* cyber-input: Input oscuro con foco resaltado en cyan */
+  .cyber-input {
+    @apply w-full bg-slate-950 border border-slate-700 text-slate-100 rounded-md px-3 py-2
+           focus:outline-none focus:border-cyan-400 focus:shadow-cyan-500/20 transition-all;
+  }
+
+  /* cyber-badge: Etiqueta pequeña para estados o prioridades */
+  .cyber-badge {
+    @apply px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-tighter border;
+  }
+}

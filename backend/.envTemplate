@@ -1,0 +1,13 @@
+#puerto donde corre el servicio
+Port=
+
+#Datos de conexion DB
+
+DB_HOST=
+DB_PORT=
+DB_NAME=
+DB_USER=
+DB_PASSWORD=
+
+#Origen de datos permitidos
+FRONTEND_URL=
