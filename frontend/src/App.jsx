@@ -4,6 +4,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import AdminDashboard from './pages/AdminDashboard';
 import ProfilePage from './pages/ProfilePage';
+import CategoriesPage from './pages/CategoriesPage';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -13,9 +14,9 @@ import Header from './components/layout/Header';
 
 function AppContent() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="container mx-auto px-4 py-8">
+      <main className="flex-grow flex flex-col container mx-auto px-4 py-8">
         <Routes>
           {/* Rutas Públicas */}
           <Route element={<PublicRoute />}>
@@ -27,6 +28,7 @@ function AppContent() {
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/categories" element={<CategoriesPage />} />
           </Route>
 
           {/* Rutas de Administrador */}

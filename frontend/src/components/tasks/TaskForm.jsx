@@ -2,14 +2,18 @@ import { useState } from 'react';
 import Input from '../ui/Input';
 import Select from '../ui/Select';
 import Button from '../ui/Button';
+import { useCategories } from '../../hooks/useCategories';
 
 const TaskForm = ({ onSubmit, loading }) => {
+  const { categories } = useCategories(true);
+
   const initialState = {
     title: '',
     description: '',
     priority: 'medium',
     status: 'pending',
-    due_date: ''
+    due_date: '',
+    category_id: ''
   };
 
   const [formData, setFormData] = useState(initialState);
@@ -49,6 +53,11 @@ const TaskForm = ({ onSubmit, loading }) => {
     { value: 'completed', label: 'Completada' },
   ];
 
+  const categoryOptions = [
+    { value: '', label: 'Sin categoría' },
+    ...categories.map(cat => ({ value: cat.id.toString(), label: cat.name }))
+  ];
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <Input
@@ -66,13 +75,20 @@ const TaskForm = ({ onSubmit, loading }) => {
         onChange={handleChange}
         placeholder="Detalles adicionales..."
       />
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         <Input
           label="Vencimiento"
           name="due_date"
           type="date"
           value={formData.due_date}
           onChange={handleChange}
+        />
+        <Select
+          label="Categoría"
+          name="category_id"
+          value={formData.category_id}
+          onChange={handleChange}
+          options={categoryOptions}
         />
       </div>
       <div className="grid grid-cols-2 gap-4">

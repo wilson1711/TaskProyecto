@@ -34,7 +34,7 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="container mx-auto px-4 py-8 max-w-4xl flex-grow flex flex-col justify-between">
       <div className="mb-8 text-center">
         <div className="relative inline-block">
           {user.avatar ? (

@@ -22,6 +22,11 @@ const TaskCard = ({ task, onEdit, onDelete }) => {
         <Badge className={getPriorityStyles(task.priority)}>
           {translatePriority(task.priority)}
         </Badge>
+        {task.category_name && (
+          <Badge className="border-purple-500/50 text-purple-400 bg-purple-500/10">
+            {task.category_name}
+          </Badge>
+        )}
       </div>
 
       <div className="grid grid-cols-2 gap-y-2 text-[11px] font-mono text-[var(--text-muted)] uppercase tracking-tighter mb-4">

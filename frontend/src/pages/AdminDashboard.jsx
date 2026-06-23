@@ -79,7 +79,7 @@ const AdminDashboard = () => {
   if (loading) return <Loading />;
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
+    <div className="container mx-auto px-4 py-8 max-w-7xl flex-grow flex flex-col justify-between">
       <div className="mb-8">
         <h1 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyber-cyan to-cyber-fuchsia uppercase italic tracking-tighter">
           Panel de Administración

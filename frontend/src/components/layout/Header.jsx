@@ -9,28 +9,31 @@ const Header = () => {
 
   return (
     <header className="cyber-card !p-0 !rounded-none border-t-0 border-x-0 mb-8 sticky top-0 z-50 backdrop-blur-md">
-      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+      <div className="container mx-auto px-4 py-3 flex justify-between items-center flex-wrap gap-y-3">
         <Link to="/" className="flex flex-col group">
           <h1 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyber-cyan to-cyber-fuchsia uppercase tracking-tighter italic group-hover:from-cyber-fuchsia group-hover:to-cyber-cyan transition-all duration-500">
             TaskFlow
           </h1>
-          <p className="text-[var(--text-muted)] text-[9px] font-mono uppercase tracking-[0.3em]">
+          <p className="hidden sm:block text-[var(--text-muted)] text-[9px] font-mono uppercase tracking-[0.3em]">
             Digital Task Manager
           </p>
         </Link>
 
-        <nav className="flex items-center gap-6">
+        <nav className="flex items-center gap-3 sm:gap-6 flex-wrap">
           {user && (
-            <div className="hidden md:flex items-center gap-4 mr-4 border-r border-[var(--border-color)] pr-6">
-              <Link to="/" className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--text-secondary)] hover:text-cyber-cyan transition-colors">
+            <div className="flex items-center gap-2 sm:gap-4 mr-2 sm:mr-4 border-r border-[var(--border-color)] pr-3 sm:pr-6">
+              <Link to="/" className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.1em] sm:tracking-[0.2em] text-[var(--text-secondary)] hover:text-cyber-cyan transition-colors">
                 Tareas
               </Link>
+              <Link to="/categories" className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.1em] sm:tracking-[0.2em] text-[var(--text-secondary)] hover:text-cyber-cyan transition-colors">
+                Categorías
+              </Link>
               {user.role === 'admin' && (
-                <Link to="/admin" className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--text-secondary)] hover:text-cyber-cyan transition-colors">
+                <Link to="/admin" className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.1em] sm:tracking-[0.2em] text-[var(--text-secondary)] hover:text-cyber-cyan transition-colors">
                   Admin
                 </Link>
               )}
-              <Link to="/profile" className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--text-secondary)] hover:text-cyber-cyan transition-colors">
+              <Link to="/profile" className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.1em] sm:tracking-[0.2em] text-[var(--text-secondary)] hover:text-cyber-cyan transition-colors">
                 Perfil
               </Link>
             </div>

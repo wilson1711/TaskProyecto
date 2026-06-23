@@ -6,7 +6,7 @@ const { pool } = require('../config/db');
 // ─────────────────────────────────────────────────────────────
 const getAllTasks = async (req, res) => {
   try {
-    const { status, priority } = req.query;
+    const { status, priority, category_id } = req.query;
     const user_id = req.user.id; // Obtenemos el ID del usuario autenticado
     
     let query  = `
@@ -18,9 +18,12 @@ const getAllTasks = async (req, res) => {
         t.priority,
         t.due_date,
         t.user_id,
+        t.category_id,
+        c.name AS category_name,
         t.created_at,
         t.updated_at
       FROM tasks t
+      LEFT JOIN categories c ON t.category_id = c.id
       WHERE t.user_id = $1
     `;
     
@@ -37,6 +40,16 @@ const getAllTasks = async (req, res) => {
       query += ` AND t.priority = $${idx}`;
       params.push(priority);
       idx++;
+    }
+
+    if (category_id) {
+      if (category_id === 'null' || category_id === 'none') {
+        query += ` AND t.category_id IS NULL`;
+      } else {
+        query += ` AND t.category_id = $${idx}`;
+        params.push(parseInt(category_id));
+        idx++;
+      }
     }
     
     query += ` ORDER BY 
@@ -94,7 +107,7 @@ const getTaskById = async (req, res) => {
 // ─────────────────────────────────────────────────────────────
 const createTask = async (req, res) => {
   try {
-    const { title, description, status, priority, due_date } = req.body;
+    const { title, description, status, priority, due_date, category_id } = req.body;
     const user_id = req.user.id;
     
     if (!title || title.trim() === '') {
@@ -105,8 +118,8 @@ const createTask = async (req, res) => {
     }
     
     const result = await pool.query(
-      `INSERT INTO tasks (title, description, status, priority, due_date, user_id)
-       VALUES ($1, $2, $3, $4, $5, $6)
+      `INSERT INTO tasks (title, description, status, priority, due_date, user_id, category_id)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)
        RETURNING *`,
       [
         title.trim(),
@@ -114,7 +127,8 @@ const createTask = async (req, res) => {
         status   || 'pending',
         priority || 'medium',
         due_date || null,
-        user_id
+        user_id,
+        category_id ? parseInt(category_id) : null
       ]
     );
     
@@ -136,7 +150,7 @@ const createTask = async (req, res) => {
 const updateTask = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, status, priority, due_date } = req.body;
+    const { title, description, status, priority, due_date, category_id } = req.body;
     const user_id = req.user.id;
     
     if (title !== undefined && title.trim() === '') {
@@ -155,26 +169,33 @@ const updateTask = async (req, res) => {
       });
     }
     
-    const result = await pool.query(
-      `UPDATE tasks SET
-        title       = COALESCE($1, title),
-        description = COALESCE($2, description),
-        status      = COALESCE($3::task_status, status),
-        priority    = COALESCE($4::task_priority, priority),
-        due_date    = COALESCE($5, due_date),
-        updated_at  = CURRENT_TIMESTAMP
-       WHERE id = $6 AND user_id = $7
-       RETURNING *`,
-      [
-        title !== undefined ? title : null,
-        description !== undefined ? description : null,
-        (status && status.trim() !== '') ? status : null,
-        (priority && priority.trim() !== '') ? priority : null,
-        (due_date && due_date.trim() !== '') ? due_date : null,
-        id,
-        user_id
-      ]
-    );
+    let query = `UPDATE tasks SET
+      title       = COALESCE($1, title),
+      description = COALESCE($2, description),
+      status      = COALESCE($3::task_status, status),
+      priority    = COALESCE($4::task_priority, priority),
+      due_date    = COALESCE($5, due_date),
+      updated_at  = CURRENT_TIMESTAMP`;
+    
+    const params = [
+      title !== undefined ? title : null,
+      description !== undefined ? description : null,
+      (status && status.trim() !== '') ? status : null,
+      (priority && priority.trim() !== '') ? priority : null,
+      (due_date && due_date.trim() !== '') ? due_date : null,
+    ];
+    
+    let idx = 6;
+    if (category_id !== undefined) {
+      query += `, category_id = $${idx}`;
+      params.push(category_id ? parseInt(category_id) : null);
+      idx++;
+    }
+    
+    query += ` WHERE id = $${idx} AND user_id = $${idx+1} RETURNING *`;
+    params.push(id, user_id);
+    
+    const result = await pool.query(query, params);
     
     res.json({
       success: true,

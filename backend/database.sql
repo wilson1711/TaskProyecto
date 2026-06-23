@@ -22,6 +22,14 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Tabla de Categorías
+CREATE TABLE IF NOT EXISTS categories (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
+);
+
 -- Tabla de Tareas
 CREATE TABLE IF NOT EXISTS tasks (
     id SERIAL PRIMARY KEY,
@@ -31,6 +39,7 @@ CREATE TABLE IF NOT EXISTS tasks (
     priority task_priority DEFAULT 'medium',
     due_date DATE,
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    category_id INTEGER REFERENCES categories(id) ON DELETE SET NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );

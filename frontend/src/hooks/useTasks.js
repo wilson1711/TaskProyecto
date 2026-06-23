@@ -13,7 +13,8 @@ export const useTasks = () => {
   const [filters, setFilters] = useState({
     status: '',
     priority: '',
-    user_id: ''
+    user_id: '',
+    category_id: ''
   });
 
   /**

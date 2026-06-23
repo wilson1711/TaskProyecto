@@ -63,7 +63,7 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
+    <div className="container mx-auto px-4 py-8 max-w-7xl flex-grow flex flex-col justify-between">
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Panel Lateral Izquierdo: Estado y Creación */}
         <div className="w-full lg:w-1/3 flex flex-col gap-8">

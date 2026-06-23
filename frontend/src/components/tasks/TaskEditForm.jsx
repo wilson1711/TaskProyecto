@@ -2,14 +2,18 @@ import { useState, useEffect } from 'react';
 import Input from '../ui/Input';
 import Select from '../ui/Select';
 import Button from '../ui/Button';
+import { useCategories } from '../../hooks/useCategories';
 
 const TaskEditForm = ({ task, onSubmit, onCancel, loading }) => {
+  const { categories } = useCategories(true);
+
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     priority: 'medium',
     status: 'pending',
-    due_date: ''
+    due_date: '',
+    category_id: ''
   });
 
   useEffect(() => {
@@ -20,7 +24,8 @@ const TaskEditForm = ({ task, onSubmit, onCancel, loading }) => {
         description: task.description || '',
         priority: task.priority || 'medium',
         status: task.status || 'pending',
-        due_date: task.due_date ? task.due_date.split('T')[0] : ''
+        due_date: task.due_date ? task.due_date.split('T')[0] : '',
+        category_id: task.category_id ? task.category_id.toString() : ''
       });
     }
   }, [task]);
@@ -47,6 +52,11 @@ const TaskEditForm = ({ task, onSubmit, onCancel, loading }) => {
     { value: 'completed', label: 'Completada' },
   ];
 
+  const categoryOptions = [
+    { value: '', label: 'Sin categoría' },
+    ...categories.map(cat => ({ value: cat.id.toString(), label: cat.name }))
+  ];
+
   return (
     <div className="fixed inset-0 bg-[var(--bg-primary)]/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
       <div className="cyber-card w-full max-w-lg border-[var(--accent-secondary)]/50 shadow-cyber-fuchsia">
@@ -68,13 +78,20 @@ const TaskEditForm = ({ task, onSubmit, onCancel, loading }) => {
             value={formData.description}
             onChange={handleChange}
           />
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <Input
               label="Vencimiento"
               name="due_date"
               type="date"
               value={formData.due_date}
               onChange={handleChange}
+            />
+            <Select
+              label="Categoría"
+              name="category_id"
+              value={formData.category_id}
+              onChange={handleChange}
+              options={categoryOptions}
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
